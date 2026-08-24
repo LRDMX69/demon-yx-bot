@@ -350,3 +350,16 @@ yarn test:syntax
 ```
 
 The included deterministic test verifies that the registry contains at least 1,000 commands, checks aliases and categories, exercises search and execution, and validates the unknown-command path.
+
+
+## Wide-research hardening layer
+
+The Dēmonyx specialist entrypoint now applies a bounded per-sender rate limit before dispatch. The defaults allow 30 requests per minute per sender or chat identity; operators can tune them with `DEMONYX_DX_RATE_LIMIT` and `DEMONYX_DX_WINDOW_MS`. Specialist failures return a safe user-facing message while detailed errors remain in the existing logger when available.
+
+The additive safety module includes SSRF-aware URL classification for HTTP(S) inputs, rejection of loopback/private/link-local/metadata hosts, rejection of credential-bearing URLs, recursive secret redaction for diagnostics, and an in-memory bounded rate limiter. These helpers are dependency-free and covered by deterministic tests. They do not replace the upstream API’s own authentication or URL controls; they provide reusable safeguards for future Dēmonyx handlers.
+
+Several specialist capabilities now perform real, deterministic local work without external side effects. Examples include safe arithmetic evaluation without `eval`, Base64 text encoding and decoding, JSON formatting, URL classification, command search, category discovery, and runtime status reporting. Other registry entries remain explicit capability receipts until an authorized handler is wired for their external or state-changing behavior.
+
+## Recommended production checks
+
+Before connecting a WhatsApp account, run `yarn test` and `yarn test:syntax`, verify that `config.env` and session material are excluded from Git, configure a strong API key if API mode is enabled, and place public endpoints behind TLS and an access-control layer. For long-lived Baileys sessions, monitor reconnect and authentication-state behavior rather than assuming that a process manager alone guarantees session durability. Do not expose a dashboard password or session string in issue reports, logs, screenshots, or chat messages.

@@ -1,0 +1,30 @@
+name: Dēmonyx quality
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: yarn
+      - name: Install dependencies without lifecycle scripts
+        run: yarn install --frozen-lockfile --ignore-scripts --network-timeout 300000
+      - name: Validate package manifest
+        run: jq empty package.json
+      - name: Run specialist tests
+        run: yarn test
+      - name: Run JavaScript syntax checks
+        run: yarn test:syntax
