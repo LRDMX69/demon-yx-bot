@@ -1,5 +1,6 @@
 'use strict'
 
+const fs = require('fs')
 const assert = require('assert/strict')
 const crypto = require('crypto')
 const registry = require('../lib/demonyx/command-registry')
@@ -12,6 +13,9 @@ const { KeyedQueue } = require('../lib/demonyx/queue')
 
 async function main() {
   telemetry.clear()
+  for (const requiredPath of ['index.js', 'config.js', 'lib/client.js', 'lib/api.js', 'plugins/alive.js', 'plugins/antiLink.js', 'lang/en.json', 'media/black.jpg', 'Dockerfile', 'heroku.yml']) {
+    assert.equal(fs.existsSync(requiredPath), true, `preserved path missing: ${requiredPath}`)
+  }
   assert.ok(registry.size >= 1000, `expected at least 1000 commands, got ${registry.size}`)
   assert.equal(registry.getCommand('help').name, 'help')
   assert.equal(registry.getCommand('commands').name, 'count')
