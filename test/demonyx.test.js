@@ -73,6 +73,20 @@ async function main() {
   assert.deepEqual(order, ['first-start', 'first-end', 'second-start', 'second-end'])
   assert.equal(queue.size, 0)
 
+  const libPath = require.resolve('../lib/')
+  const pluginPath = require.resolve('../plugins/demonyx')
+  const originalLib = require.cache[libPath]
+  const registrations = []
+  require.cache[libPath] = { id: libPath, filename: libPath, loaded: true, exports: { bot: (config, handler) => registrations.push({ config, handler }) } }
+  delete require.cache[pluginPath]
+  require(pluginPath)
+  assert.equal(registrations.length, 1)
+  assert.equal(registrations[0].config.pattern, 'dx ?(.*)')
+  assert.equal(typeof registrations[0].handler, 'function')
+  delete require.cache[pluginPath]
+  if (originalLib) require.cache[libPath] = originalLib
+  else delete require.cache[libPath]
+
   console.log(`Dēmonyx tests passed: ${registry.size} commands registered`)
 }
 
