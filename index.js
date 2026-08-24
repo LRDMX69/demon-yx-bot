@@ -1,5 +1,5 @@
 const { Client, logger } = require('./lib/client')
-const { DATABASE, VERSION } = require('./config')
+const { DATABASE, VERSION, BOT_ENABLED } = require('./config')
 const { stopInstance } = require('./lib/pm2')
 
 const start = async () => {
@@ -16,12 +16,16 @@ const start = async () => {
     return stopInstance()
   }
 
-  const bot = new Client()
+  const bot = BOT_ENABLED ? new Client() : null
 
-  try {
-    await bot.connect()
-  } catch (error) {
-    logger.error({ msg: 'Bot client failed to start', error: error.message })
+  if (bot) {
+    try {
+      await bot.connect()
+    } catch (error) {
+      logger.error({ msg: 'Bot client failed to start', error: error.message })
+    }
+  } else {
+    logger.info('WhatsApp client disabled because API_MODE is api-only')
   }
 
   return bot
