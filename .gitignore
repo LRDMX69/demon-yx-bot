@@ -28,3 +28,5 @@ sessions/
 auth_info_baileys/
 logs/
 .yarn-cache/
+data/saveso.json
+data/user-sessions.json

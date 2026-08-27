@@ -24,6 +24,10 @@ jobs:
         run: yarn install --frozen-lockfile --ignore-scripts --network-timeout 300000
       - name: Validate package manifest
         run: jq empty package.json
+      - name: Train local MoE artifact
+        run: yarn train:moe
+      - name: Evaluate local MoE routing
+        run: yarn evaluate:moe
       - name: Run specialist tests
         run: yarn test
       - name: Run JavaScript syntax checks

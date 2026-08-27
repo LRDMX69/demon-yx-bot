@@ -1,0 +1,10 @@
+{
+  "artifact": "models/demonyx-moe.json",
+  "corpus": "data/moe-training.jsonl",
+  "trainer": "scripts/train-local-moe.js",
+  "evaluator": "scripts/evaluate-local-moe.js",
+  "method": "offline keyword-frequency expert gating",
+  "externalAiRequired": false,
+  "experts": ["moderation", "utility", "security", "productivity", "knowledge", "media", "developer", "community"],
+  "minimumEvaluationAccuracy": 0.75
+}

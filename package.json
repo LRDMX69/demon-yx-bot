@@ -1,7 +1,7 @@
 {
   "name": "demon-yx-bot",
   "version": "6.1.7-demonyx.1",
-  "description": "Dēmonyx — a hardened multi-session WhatsApp bot built on Baileys, preserving the original plugin, moderation, media, and webhook API features while adding a 1,200+ command specialist.",
+  "description": "Dēmonyx — a hardened multi-session WhatsApp bot built on Baileys, preserving the original plugin, moderation, media, and webhook API features while adding a local-first MoE router and 11,000+ specialist commands.",
   "keywords": [
     "whatsapp",
     "whatsapp-bot",
@@ -22,7 +22,8 @@
     "media-downloader",
     "nodejs",
     "plugin",
-    "specialist-agent"
+    "specialist-agent",
+    "mixture-of-experts"
   ],
   "main": "index.js",
   "scripts": {
@@ -31,6 +32,8 @@
     "stop": "pm2 stop demonyx",
     "test": "node test/demonyx.test.js",
     "test:syntax": "find . -type f -name '*.js' -not -path './node_modules/*' -print0 | xargs -0 -n1 node --check",
+    "train:moe": "node scripts/train-local-moe.js",
+    "evaluate:moe": "node scripts/evaluate-local-moe.js",
     "postinstall": "node -e \"try { require('sharp') } catch (e) { process.exit(1); }\" || yarn add --ignore-engines sharp@0.34.5"
   },
   "author": "",

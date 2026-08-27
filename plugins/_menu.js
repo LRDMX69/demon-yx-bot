@@ -1,3 +1,21 @@
+const fs = require('fs')
+const path = require('path')
+
+const MENU_ART = path.join(__dirname, '../assets/demonyx-menu.png')
+
+async function sendMenu(message, text) {
+  if (!fs.existsSync(MENU_ART)) return await message.send(text)
+  try {
+    return await message.send(
+      MENU_ART,
+      { caption: text, quoted: message.data, mimetype: 'image/png' },
+      'image'
+    )
+  } catch {
+    return await message.send(text)
+  }
+}
+
 const {
   addSpace,
   textToStylist,
@@ -116,7 +134,7 @@ bot(
           msg += ` │ ${textToStylist(plugin.toUpperCase(), 'mono')}\n`
         })
       msg += ` ╰─────────────────`
-      return await message.send(msg)
+      return await sendMenu(message, msg)
     }
 
     for (const command of sortedCommandKeys) {
@@ -129,6 +147,6 @@ bot(
       msg += ` ╰─────────────────\n`
     }
 
-    await message.send(msg.trim())
+    await sendMenu(message, msg.trim())
   }
 )

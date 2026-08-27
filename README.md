@@ -1,5 +1,11 @@
 # Dēmonyx WhatsApp MD User Bot
 
+<p align="center">
+  <img src="assets/demonyx-menu.png" alt="Dēmonyx WhatsApp bot artwork" width="760" />
+</p>
+
+<p align="center"><strong>Dēmonyx — intelligence beyond limits, built to serve and made to evolve.</strong></p>
+
 Dēmonyx is a powerful, feature-rich WhatsApp bot built from the Levanter codebase, with multi-session support, plugin system, group moderation, media tools, and an optional **API** for sending and receiving messages programmatically.
 
 ## Features
@@ -349,7 +355,7 @@ yarn test
 yarn test:syntax
 ```
 
-The included deterministic test verifies that the registry contains at least 1,000 commands, checks aliases and categories, exercises search and execution, and validates the unknown-command path.
+The included deterministic test verifies that the registry contains more than 11,000 commands, preserves legacy aliases, checks extended namespaces and categories, exercises search and execution, and validates the unknown-command path.
 
 
 ## Wide-research hardening layer
@@ -363,3 +369,32 @@ Several specialist capabilities now perform real, deterministic local work witho
 ## Recommended production checks
 
 Before connecting a WhatsApp account, run `yarn test` and `yarn test:syntax`, verify that `config.env` and session material are excluded from Git, configure a strong API key if API mode is enabled, and place public endpoints behind TLS and an access-control layer. For long-lived Baileys sessions, monitor reconnect and authentication-state behavior rather than assuming that a process manager alone guarantees session durability. Do not expose a dashboard password or session string in issue reports, logs, screenshots, or chat messages.
+
+
+## Local-first MoE specialist
+
+Dēmonyx includes a transparent local-first mixture-of-experts router. Run `.dx moe <request>` to classify a request into a local expert such as moderation, utility, security, productivity, knowledge, media, developer, or community. The router uses the checked-in `models/demonyx-moe.json` artifact and bounded in-memory context; ordinary routing does not require an external AI provider or API key.
+
+The model is intentionally a **small local gating model**, not a claim of a full neural language model. Its reproducible offline trainer learns keyword weights from `data/moe-training.jsonl`. Run `yarn train:moe` to regenerate the artifact and `yarn evaluate:moe` to measure routing accuracy. External AI can remain an optional future fallback for requests that need generation rather than local classification.
+
+## Expanded specialist catalog
+
+The registry preserves the original Dēmonyx command names and aliases and adds more than 10,000 namespaced capabilities across automation, knowledge, communication, workflow, content, monitoring, integration, data, community, and research. Use `.dx count`, `.dx categories`, or `.dx search <term>` to explore the catalog. All generated capabilities remain safe receipts until an explicitly authorized handler is bound; registry size alone never grants permission to mutate groups, accounts, files, or external services.
+
+
+## SaveSo quick capture
+
+Use `.saveso <text>` to save a personal note or item locally. Saved items are scoped to the sender or chat identity and are stored atomically in `data/saveso.json`, which is excluded from Git. Use `.saveso list`, `.saveso get <id>`, `.saveso search <term>`, and `.saveso delete <id>` to manage them. The store enforces bounded text and item limits and never exposes another owner’s saved content through the command interface.
+
+
+## Automatic per-user logical sessions
+
+Dēmonyx now creates a logical session automatically for each sender or chat identity on first use. It refreshes the session during normal activity, rotates it after idle or absolute expiry, and supports `.dx session`, `.dx session rotate`, and `.dx session logout`. The logical session ID is opaque, bounded, and stored separately from WhatsApp authentication.
+
+The configured `SESSION_ID` remains the stable Baileys authentication lookup key for the bot’s WhatsApp account. Logical-session rotation never changes `SESSION_ID`, disconnects WhatsApp, or creates a new WhatsApp account. A separate WhatsApp account still requires explicit QR or pairing and should not be auto-created for arbitrary bot users. SaveSo remains scoped to stable sender or chat identity so a logical rotation does not hide a user’s saved items.
+
+
+Logical-session rotation also gives the local MoE router a fresh bounded context window, while SaveSo continues to use the stable sender or chat owner key. This keeps transient conversational context isolated across rotations without making saved items disappear.
+
+
+For safety, `.dx session` displays only a short session fingerprint. The complete logical token stays in the protected session store and is never intended for sharing or manual configuration.

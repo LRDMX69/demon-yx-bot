@@ -27,3 +27,7 @@ Dēmonyx addresses the application-side portion conservatively by serializing sp
 ## Security posture
 
 User-controlled URLs, webhook bodies, session identifiers, API keys, and dashboard passwords are treated as sensitive or untrusted inputs. The Dēmonyx safety layer rejects obvious private, loopback, link-local, metadata, credential-bearing, and unsupported-protocol URLs; redacts secrets in diagnostic objects; and applies a bounded per-sender rate limit to the specialist entrypoint. Provider-specific network fetchers should still add request timeouts, response-size caps, content-type checks, and redirect validation.
+
+## Local MoE training
+
+The local-first router is trained offline from `data/moe-training.jsonl` by `scripts/train-local-moe.js`, evaluated by `scripts/evaluate-local-moe.js`, and loaded by `lib/demonyx/moe.js`. This avoids an external model/API dependency for routing and makes the training artifact inspectable and reproducible.

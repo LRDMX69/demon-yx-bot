@@ -1,0 +1,32 @@
+{"expert":"moderation","text":"scan this group for spam links and warn the sender"}
+{"expert":"moderation","text":"mute the member posting repeated unwanted messages"}
+{"expert":"moderation","text":"review group rules and remove unsafe mentions"}
+{"expert":"moderation","text":"check new joins and suspicious admin activity"}
+{"expert":"utility","text":"calculate the total and format this JSON document"}
+{"expert":"utility","text":"convert the time and validate this URL"}
+{"expert":"utility","text":"encode this text and check the phone number"}
+{"expert":"utility","text":"decode the value and measure the file"}
+{"expert":"security","text":"audit the webhook token and verify the secret"}
+{"expert":"security","text":"check this URL for private hosts and unsafe redirects"}
+{"expert":"security","text":"rotate the session credential and block a suspicious login"}
+{"expert":"security","text":"monitor headers and report a security threat"}
+{"expert":"productivity","text":"create a task and schedule a reminder"}
+{"expert":"productivity","text":"save a note and update the project list"}
+{"expert":"productivity","text":"prioritize goals and track this workflow"}
+{"expert":"productivity","text":"review the bookmark and complete the habit"}
+{"expert":"knowledge","text":"explain why this works and define the concept"}
+{"expert":"knowledge","text":"summarize the topic and answer the question"}
+{"expert":"knowledge","text":"compare these sources and make a learning plan"}
+{"expert":"knowledge","text":"what is the meaning of this term"}
+{"expert":"media","text":"download the video and extract the audio"}
+{"expert":"media","text":"resize the image and create a thumbnail"}
+{"expert":"media","text":"convert the document and add a caption"}
+{"expert":"media","text":"inspect the sticker metadata and compress the file"}
+{"expert":"developer","text":"debug the plugin and inspect the API error"}
+{"expert":"developer","text":"test the command and format the configuration"}
+{"expert":"developer","text":"trace the runtime and review the dependency"}
+{"expert":"developer","text":"generate a schema and benchmark the handler"}
+{"expert":"community","text":"welcome the new member and announce the event"}
+{"expert":"community","text":"create a poll and mention the group"}
+{"expert":"community","text":"organize the community activity and review members"}
+{"expert":"community","text":"schedule a broadcast and inspect the channel"}

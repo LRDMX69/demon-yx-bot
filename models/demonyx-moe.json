@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "trainedAt": "2026-08-24T00:00:00.000Z",
+  "trainingExamples": 32,
+  "trainingMethod": "offline keyword-frequency expert gating",
+  "experts": {
+    "moderation": { "keywords": ["spam", "links", "warn", "mute", "ban", "group", "admin", "rules", "mentions", "joins", "unsafe", "messages"], "bias": 0 },
+    "utility": { "keywords": ["calculate", "convert", "format", "json", "encode", "decode", "time", "validate", "phone", "number", "file"], "bias": 0 },
+    "security": { "keywords": ["security", "url", "token", "secret", "webhook", "audit", "safe", "private", "redirects", "credential", "suspicious", "login"], "bias": 0 },
+    "productivity": { "keywords": ["task", "note", "save", "plan", "remind", "schedule", "list", "project", "goals", "workflow", "habit", "bookmark"], "bias": 0 },
+    "knowledge": { "keywords": ["explain", "what", "why", "how", "learn", "define", "summary", "concept", "topic", "question", "sources"], "bias": 0 },
+    "media": { "keywords": ["image", "video", "audio", "sticker", "media", "thumbnail", "caption", "download", "extract", "resize", "document"], "bias": 0 },
+    "developer": { "keywords": ["code", "debug", "test", "plugin", "api", "config", "error", "runtime", "schema", "dependency", "benchmark"], "bias": 0 },
+    "community": { "keywords": ["welcome", "poll", "announce", "member", "mention", "event", "community", "broadcast", "channel", "activity"], "bias": 0 }
+  }
+}
