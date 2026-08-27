@@ -24,7 +24,7 @@ bot(
     }
     if (
       !message.reply_message ||
-      (!message.reply_message.image && !message.reply_message.video && !message.reply_message.txt)
+      (!message.reply_message.image && !message.reply_message.video && !message.reply_message.text)
     ) {
       return await message.send(lang.plugins.setstatus.reply_required)
     }
@@ -63,7 +63,7 @@ bot(
     }
     if (
       !message.reply_message ||
-      (!message.reply_message.image && !message.reply_message.video && !message.reply_message.txt)
+      (!message.reply_message.image && !message.reply_message.video && !message.reply_message.text)
     ) {
       return await message.send(lang.plugins.scstatus.reply_required)
     }
@@ -81,7 +81,7 @@ bot(
   async (message, match) => {
     if (
       !message.reply_message ||
-      (!message.reply_message.image && !message.reply_message.video && !message.reply_message.txt)
+      (!message.reply_message.image && !message.reply_message.video && !message.reply_message.text)
     ) {
       return await message.send('Reply to an image, video, or text with `.gstatus <jid>`')
     }

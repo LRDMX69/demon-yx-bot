@@ -32,8 +32,9 @@ bot(
         contextInfo: { mentionedJid },
       })
     }
-    if (match || message.reply_message.txt)
-      return await message.send(match || message.reply_message.text, {
+    const replyText = message.reply_message && message.reply_message.text
+    if (match || replyText)
+      return await message.send(match || replyText, {
         contextInfo: { mentionedJid },
       })
     if (!message.reply_message) return await message.send(lang.plugins.tag.usage)

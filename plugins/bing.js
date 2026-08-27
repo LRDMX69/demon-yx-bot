@@ -6,7 +6,7 @@ bot(
     type: 'ai',
   },
   async (message, match, ctx) => {
-    match = match || message.reply_message.text
+    match = match || (message.reply_message && message.reply_message.text)
     if (!match) return await message.send(lang.plugins.bing.example)
     const res = await bing(match, message.id)
     return await message.send(res, { quoted: message.data })

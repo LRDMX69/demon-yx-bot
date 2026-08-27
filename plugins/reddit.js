@@ -7,7 +7,7 @@ bot(
     type: 'download',
   },
   async (message, match) => {
-    match = isUrl(match || message.reply_message.text)
+    match = isUrl(match || (message.reply_message && message.reply_message.text))
     if (!match) return await message.send(lang.plugins.reddit.usage)
     const result = await reddit(match)
     if (!result)

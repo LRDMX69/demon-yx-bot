@@ -1,6 +1,18 @@
 const axios = require('axios')
 const fs = require('fs-extra')
 const path = require('path')
+const MAX_PLUGIN_BYTES = 512 * 1024
+
+function isAllowedPluginUrl(value) {
+  try {
+    const url = new URL(value)
+    return url.protocol === 'https:' &&
+      (url.hostname === 'gist.githubusercontent.com' || url.hostname === 'gist.github.com')
+  } catch (_) {
+    return false
+  }
+}
+
 const {
   bot,
   parseGistUrls,
@@ -18,9 +30,10 @@ bot(
     pattern: 'plugin ?(.*)',
     desc: lang.plugins.plugin.desc,
     type: 'plugin',
+    fromMe: true,
   },
   async (message, match) => {
-    match = match || message.reply_message.text
+    match = match || (message.reply_message && message.reply_message.text)
     if (!match) return await message.send(lang.plugins.plugin.usage)
     if (match == 'list') {
       const plugins = await getPlugin(message.id)
@@ -32,6 +45,9 @@ bot(
       return await message.send('```' + msg + '```')
     }
     const isValidUrl = parseGistUrls(match)
+    if (isValidUrl && isValidUrl.some((url) => !isAllowedPluginUrl(url))) {
+      return await message.send(lang.plugins.plugin.invalid)
+    }
     if (!isValidUrl || isValidUrl.length < 1) {
       const { url } = await getPlugin(message.id, match)
       if (url) return await message.send(url, { quoted: message.data })
@@ -41,9 +57,14 @@ bot(
 
     for (const url of isValidUrl) {
       try {
-        const res = await axios.get(url)
-        if (res.status === 200) {
-          const matchResult = /pattern: ["'](.*)["'],/g.exec(res.data)
+        const res = await axios.get(url, {
+          timeout: 15000,
+          maxContentLength: MAX_PLUGIN_BYTES,
+          maxBodyLength: MAX_PLUGIN_BYTES,
+        })
+        const source = typeof res.data === 'string' ? res.data : ''
+        if (res.status === 200 && Buffer.byteLength(source, 'utf8') <= MAX_PLUGIN_BYTES) {
+          const matchResult = /pattern: ["'](.*)["'],/g.exec(source)
           if (!matchResult || !matchResult[1]) {
             await message.send(lang.plugins.plugin.invalid)
             continue
@@ -52,21 +73,21 @@ bot(
           const epluginDir = path.join(__dirname, '../eplugins/')
           fs.ensureDirSync(epluginDir)
           const pluginPath = path.join(epluginDir, `${message.id}${plugin_name}.js`)
-          fs.writeFileSync(pluginPath, res.data)
+          fs.writeFileSync(pluginPath, source)
 
           try {
             installPlugin(pluginPath, message.id)
           } catch (e) {
-            await message.send(e.stack, { quoted: message.quoted })
+            await message.send(lang.plugins.plugin.invalid, { quoted: message.quoted })
             fs.unlinkSync(pluginPath)
             continue
           }
 
           await setPlugin(plugin_name, url, message.id)
-          msg += `${pluginsList(res.data).join(',')}\n`
+          msg += `${pluginsList(source).join(',')}\n`
         }
       } catch (error) {
-        await message.send(`${error.message}\n${url}`)
+        await message.send(lang.plugins.plugin.invalid)
       }
     }
 
@@ -79,6 +100,7 @@ bot(
     pattern: 'remove ?(.*)',
     desc: lang.plugins.remove.desc,
     type: 'plugin',
+    fromMe: true,
   },
   async (message, match) => {
     if (!match) return await message.send(lang.plugins.remove.usage)

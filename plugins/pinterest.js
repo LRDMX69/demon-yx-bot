@@ -7,7 +7,7 @@ bot(
     type: 'download',
   },
   async (message, match) => {
-    match = isUrl(match || message.reply_message.text)
+    match = isUrl(match || (message.reply_message && message.reply_message.text))
     if (!match) return await message.send(lang.plugins.pinterest.usage)
     const result = await pinterest(match)
     if (!result.length)

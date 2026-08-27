@@ -32,3 +32,9 @@ jobs:
         run: yarn test
       - name: Run JavaScript syntax checks
         run: yarn test:syntax
+      - name: Run plugin guard regression checks
+        run: yarn qa:plugin-guards
+      - name: Run repository inventory checks
+        run: node scripts/qa-inventory.js
+      - name: Run risk-boundary scan
+        run: node scripts/qa-risk-scan.js

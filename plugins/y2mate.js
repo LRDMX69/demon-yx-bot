@@ -9,7 +9,7 @@ bot(
     type: 'download',
   },
   async (message, match) => {
-    match = match || message.reply_message.text
+    match = match || (message.reply_message && message.reply_message.text)
     if (!match) return await message.send(lang.plugins.y2mate.ytv_usage)
 
     if (match.startsWith('y2mate;')) {
@@ -64,7 +64,7 @@ bot(
     type: 'download',
   },
   async (message, match) => {
-    match = match || message.reply_message.text
+    match = match || (message.reply_message && message.reply_message.text)
     if (!match) return await message.send(lang.plugins.y2mate.yta_usage)
 
     const vid = ytIdRegex.exec(match)

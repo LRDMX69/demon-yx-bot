@@ -7,7 +7,7 @@ bot(
     type: 'download',
   },
   async (message, match) => {
-    match = isUrl(match || message.reply_message.text)
+    match = isUrl(match || (message.reply_message && message.reply_message.text))
     if (!match) return await message.send('_Example : mediafire url_')
     const result = await mediafire(match)
     if (!result)

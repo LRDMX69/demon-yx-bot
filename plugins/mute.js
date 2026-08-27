@@ -11,7 +11,7 @@ bot(
     const participants = await message.groupMetadata(message.jid)
     const isImAdmin = await isAdmin(participants, message.client.user.jid)
     if (!isImAdmin) return await message.send(lang.plugins.common.not_admin)
-    let msg = message.reply_message.text || 'null'
+    let msg = (message.reply_message && message.reply_message.text) || 'null'
     const [hour, min] = match.split(' ')
     if (hour == 'info') {
       const task = await getMute(message.jid, 'mute', message.id)
@@ -67,7 +67,7 @@ bot(
     const participants = await message.groupMetadata(message.jid)
     const isImAdmin = await isAdmin(participants, message.client.user.jid)
     if (!isImAdmin) return await message.send(lang.plugins.common.not_admin)
-    let msg = message.reply_message.text || 'null'
+    let msg = (message.reply_message && message.reply_message.text) || 'null'
     const [hour, min] = match.split(' ')
     if (hour == 'info') {
       const task = await getMute(message.jid, 'unmute', message.id)

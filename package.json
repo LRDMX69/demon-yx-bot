@@ -34,6 +34,7 @@
     "test:syntax": "find . -type f -name '*.js' -not -path './node_modules/*' -print0 | xargs -0 -n1 node --check",
     "train:moe": "node scripts/train-local-moe.js",
     "evaluate:moe": "node scripts/evaluate-local-moe.js",
+    "qa:plugin-guards": "node scripts/qa-plugin-guards.js",
     "postinstall": "node -e \"try { require('sharp') } catch (e) { process.exit(1); }\" || yarn add --ignore-engines sharp@0.34.5"
   },
   "author": "",

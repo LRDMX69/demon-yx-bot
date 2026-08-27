@@ -1,5 +1,6 @@
 'use strict'
 
+const crypto = require('crypto')
 const fs = require('fs')
 const path = require('path')
 const { tokenize, defaultModel } = require('../lib/demonyx/moe')
@@ -7,7 +8,9 @@ const { tokenize, defaultModel } = require('../lib/demonyx/moe')
 const inputPath = path.resolve(process.argv[2] || path.join(__dirname, '../data/moe-training.jsonl'))
 const outputPath = path.resolve(process.argv[3] || path.join(__dirname, '../models/demonyx-moe.json'))
 const stopwords = new Set(['a', 'an', 'and', 'are', 'be', 'for', 'in', 'is', 'of', 'on', 'the', 'this', 'to', 'with', 'what', 'why', 'how'])
-const rows = fs.readFileSync(inputPath, 'utf8').split(/\r?\n/).filter(Boolean).map((line, index) => {
+const trainingSource = fs.readFileSync(inputPath, 'utf8')
+const trainingFingerprint = crypto.createHash('sha256').update(trainingSource).digest('hex')
+const rows = trainingSource.split(/\r?\n/).filter(Boolean).map((line, index) => {
   try {
     const row = JSON.parse(line)
     if (!row.expert || !row.text) throw new Error('expert and text are required')
@@ -29,7 +32,14 @@ for (const row of rows) {
   experts[expert] = counts
 }
 
-const model = { ...defaultModel, version: 2, trainedAt: new Date().toISOString(), trainingExamples: rows.length, experts: {} }
+const model = {
+  ...defaultModel,
+  version: 2,
+  trainedAt: `offline:${trainingFingerprint.slice(0, 16)}`,
+  trainingFingerprint,
+  trainingExamples: rows.length,
+  experts: {},
+}
 for (const [name, value] of Object.entries(experts)) {
   const keywords = [...value.counts.entries()]
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))

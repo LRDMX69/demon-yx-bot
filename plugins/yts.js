@@ -35,7 +35,7 @@ bot(
     type: 'download',
   },
   async (message, match) => {
-    match = match || message.reply_message.text
+    match = match || (message.reply_message && message.reply_message.text)
     if (!match) return await message.send(lang.plugins.song.usage)
     const isDirect = YT_URL_REGEX.test(match)
     if (isDirect) {
@@ -74,7 +74,7 @@ bot(
     type: 'download',
   },
   async (message, match) => {
-    match = match || message.reply_message.text
+    match = match || (message.reply_message && message.reply_message.text)
     if (!match) return await message.send(lang.plugins.video.usage)
 
     let quality = null;

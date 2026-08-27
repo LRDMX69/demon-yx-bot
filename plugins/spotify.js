@@ -8,7 +8,7 @@ bot(
     type: 'download',
   },
   async (message, match) => {
-    match = match || message.reply_message.text || ''
+    match = match || (message.reply_message && message.reply_message.text) || ''
     const spotify = IsSpotify(match)
     if (!spotify) return await message.send(lang.plugins.spotify.example)
     match = isUrl(match)

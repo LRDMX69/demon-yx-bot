@@ -186,7 +186,7 @@ bot(
     desc: lang.plugins.join.desc,
   },
   async (message, match) => {
-    match = match || message.reply_message.text
+    match = match || (message.reply_message && message.reply_message.text)
     if (!match) return await message.send(lang.plugins.join.invalid_link)
     const wa = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})/
     const [_, code] = match.match(wa) || []
@@ -221,7 +221,7 @@ bot(
     desc: lang.plugins.group_info.desc,
   },
   async (message, match) => {
-    match = match || message.reply_message.text
+    match = match || (message.reply_message && message.reply_message.text)
     if (!match) return await message.send(lang.plugins.group_info.ginfo_usage)
     const linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i
     const [_, code] = match.match(linkRegex) || []

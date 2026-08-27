@@ -6,7 +6,7 @@ bot(
     type: 'misc',
   },
   async (message, match, ctx) => {
-    match = match || message.reply_message.text
+    match = match || (message.reply_message && message.reply_message.text)
     if (!match) return await message.send('*Example : tts Hi*\n*tts Hi {ml}*')
     let LANG = ctx.LANG
     const lang = match.match('\\{([a-z]+)\\}')

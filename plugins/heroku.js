@@ -58,7 +58,7 @@ if (Config.HEROKU_API_KEY && Config.HEROKU_APP_NAME) {
           .get('/account')
           .then(async (account) => {
             const url = `https://api.heroku.com/accounts/${account.id}/actions/get-quota`
-            headers = {
+            const headers = {
               'User-Agent': 'Chrome/80.0.3987.149 Mobile Safari/537.36',
               Authorization: 'Bearer ' + Config.HEROKU_API_KEY,
               Accept: 'application/vnd.heroku+json; version=3.account-quotas',
